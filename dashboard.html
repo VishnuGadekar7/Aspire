@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AspireHub - Student Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --accent-color: #3b82f6;
+        --background-color: #f1f5f9;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --header-height: 70px;
+      }
+
+      body {
+        background-color: var(--background-color);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        line-height: 1.6;
+      }
+
+      header {
+        background: white;
+        box-shadow: var(--card-shadow);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        height: var(--header-height);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+        height: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .logo::before {
+        content: "🎓";
+        font-size: 1.5rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-links a {
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-color);
+        background-color: #f8fafc;
+      }
+
+      .nav-links a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        background-color: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .welcome-section {
+        background: white;
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin: calc(var(--header-height) + 2rem) 0 2rem;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .welcome-section h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+      }
+
+      .welcome-section p {
+        color: #64748b;
+        font-size: 1.1rem;
+      }
+
+      .action-button {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .action-button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        color: white;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+      }
+
+      .dashboard-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-card h2 {
+        color: #1e293b;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .view-all {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .view-all:hover {
+        color: var(--secondary-color);
+      }
+
+      .mock-card {
+        border: none;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        box-shadow: var(--card-shadow);
+        background: white;
+        border: 1px solid #e2e8f0;
+      }
+
+      .mock-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .mock-card .card-body {
+        padding: 2rem;
+      }
+
+      .mock-card i {
+        color: var(--primary-color);
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .mock-card h3 {
+        color: #1e293b;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .mock-card p {
+        color: #64748b;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Enhanced mock card styles */
+      .mock-card .subject-badges {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .badge-soft {
+        background: #eef2ff;
+        color: #3b82f6;
+        border: 1px solid #dbeafe;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+      .mock-meta {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        color: #64748b;
+        font-size: 0.95rem;
+      }
+      .mock-meta span { display: inline-flex; align-items: center; gap: 6px; }
+      .mock-card .icon-circle {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(59,130,246,.15), rgba(37,99,235,.05));
+        margin: 0 auto 14px auto;
+      }
+      .mock-card .icon-circle i { margin: 0; font-size: 1.75rem; }
+      .btn-outline-primary {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        text-decoration: none;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+      }
+      .btn-outline-primary:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(37,99,235,.25);
+      }
+      @media (max-width: 576px) {
+        .mock-card .btn-outline-primary { width: 100%; justify-content: center; }
+      }
+
+      footer {
+        background: #1e293b;
+        color: white;
+        padding: 4rem 0 2rem;
+        margin-top: 4rem;
+      }
+
+      footer h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+
+      footer p {
+        color: #94a3b8;
+        line-height: 1.8;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-icon {
+        color: #94a3b8;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .social-icon:hover {
+        color: white;
+        background: var(--primary-color);
+        transform: translateY(-3px);
+      }
+
+      #contact {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 3rem;
+        margin-top: 3rem;
+      }
+
+      #contact h2 {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+      }
+
+      .form-control::placeholder {
+        color: #94a3b8;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+      }
+
+      .text-center.mt-4 {
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .welcome-section {
+          flex-direction: column;
+          text-align: center;
+          gap: 1.5rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">AspireHub</div>
+        <ul class="nav-links">
+          <li><a href="dashboard.html" class="active">Dashboard</a></li>
+          <li><a href="dashboard.html#mocks">Mocks</a></li>
+          <li><a href="note.html">Notes</a></li>
+          <li>
+            <a href="pages/topiclinks.html">Topics Links</a>
+          </li>
+          <li><a href="#" id="logoutButton">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div id="loadingIndicator">Loading your dashboard...</div>
+
+      <div id="dashboardContent" style="display: none">
+        <div class="welcome-section">
+          <div>
+            <h1 id="welcomeMessage">Welcome back!</h1>
+            <p id="lastLoginInfo">
+              Your last login was on <span id="lastLoginDate">-</span>
+            </p>
+          </div>
+          <a href="#mocks" class="action-button">Start New Mock Test</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+
+    <!-- Hero Section -->
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h2>Mock Tests <a href="#mocks" class="view-all">View All</a></h2>
+        <div id="mocksList">
+          Examining practice tests and sample exercises helps you understand the
+          format, difficulty level, and types of questions you'll encounter.
+          This builds familiarity with assessment structures and identifies
+          knowledge gaps before they become problematic.
+          <div class="empty-state"></div>
+        </div>
+        <a href="#mocks" class="button">View All Mock Tests</a>
+      </div>
+
+      <div class="dashboard-card">
+        <h2>
+          Study Notes
+          <a href="note.html" class="view-all">View All</a>
+        </h2>
+        <div id="notesList">
+          Active note-taking transforms passive learning into engaged
+          understanding. Create structured, organized notes that highlight key
+          concepts, definitions, and relationships between ideas.
+          <div class="empty-state"></div>
+        </div>
+        <a href="note.html" class="button">Browse All Notes</a>
+      </div>
+
+      <div class="dashboard-card">
+        <h2>
+          Topics Links<a href="pages/topiclinks.html" class="view-all"
+            >View All</a
+          >
+        </h2>
+        <div id="topicsList">
+          Video lectures provide expert explanations and visual demonstrations
+          that complement text-based learning. Watch with purpose—pause to take
+          notes, rewind complex sections, and actively connect new information
+          to what you already know.
+          <div class="empty-state"></div>
+        </div>
+        <a href="pages/topiclinks.html" class="button">Explore All Topics</a>
+      </div>
+    </div>
+    <!-- Mocks Section -->
+    <section id="mocks">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="display-5 mb-3">Featured Mocks</h2>
+          <p class="lead">Practice with our curated collection of mock tests</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card mock-card h-100">
+              <div class="card-body text-center">
+                <div class="icon-circle"><i class="bi bi-rocket-takeoff text-primary"></i></div>
+                <h3>Physics Mock</h3>
+                <div class="subject-badges">
+                  <span class="badge-soft">JEE</span>
+                  <span class="badge-soft">Class XII</span>
+                </div>
+                <div class="mock-meta">
+                  <span><i class="bi bi-question-circle"></i> 30 Qs</span>
+                  <span><i class="bi bi-clock"></i> 10 min</span>
+                </div>
+                <p>Comprehensive physics test series</p>
+                <a
+                  href="pages/mocks/physics/phymock.html"
+                  class="btn btn-outline-primary"
+                >
+                  Start Test <i class="bi bi-arrow-right-circle ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mock-card h-100">
+              <div class="card-body text-center">
+                <div class="icon-circle"><i class="bi bi-flask text-primary"></i></div>
+                <h3>Chemistry Mock</h3>
+                <div class="subject-badges">
+                  <span class="badge-soft">JEE</span>
+                  <span class="badge-soft">Class XII</span>
+                </div>
+                <div class="mock-meta">
+                  <span><i class="bi bi-question-circle"></i> 30 Qs</span>
+                  <span><i class="bi bi-clock"></i> 10 min</span>
+                </div>
+                <p>Comprehensive Chemistry test series</p>
+                <a
+                  href="pages/mocks/chem/chemmock.html"
+                  class="btn btn-outline-primary"
+                >
+                  Start Test <i class="bi bi-arrow-right-circle ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mock-card h-100">
+              <div class="card-body text-center">
+                <div class="icon-circle"><i class="bi bi-calculator text-primary"></i></div>
+                <h3>Mathematics Mock</h3>
+                <div class="subject-badges">
+                  <span class="badge-soft">JEE</span>
+                  <span class="badge-soft">Class XII</span>
+                </div>
+                <div class="mock-meta">
+                  <span><i class="bi bi-question-circle"></i> 30 Qs</span>
+                  <span><i class="bi bi-clock"></i> 10 min</span>
+                </div>
+                <p>Comprehensive Mathematics test series</p>
+                <a
+                  href="pages/mocks/maths/mathmock.html"
+                  class="btn btn-outline-primary"
+                >
+                  Start Test <i class="bi bi-arrow-right-circle ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <h3>AspireHub</h3>
+            <p class="mt-3">
+              <strong>Phone:</strong> +1 234 567 890<br />
+              <strong>Email:</strong> info@aspirehub.com
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-6">
+            <h4>Quick Links</h4>
+            <ul class="list-unstyled">
+              <li>
+                <a href="dashboard.html" class="text-decoration-none text-light">Home</a>
+              </li>
+              <li>
+                <a href="dashboard.html" class="text-decoration-none text-light">About</a>
+              </li>
+              <li>
+                <a href="#mocks" class="text-decoration-none text-light">Mocks</a>
+              </li>
+              <li>
+                <a href="#contact" class="text-decoration-none text-light">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <section id="contact" class="py-5">
+          <div class="container">
+            <h2 class="text-center mb-5">Contact Us</h2>
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <form action="https://api.web3forms.com/submit" method="post">
+                  <input
+                    type="hidden"
+                    name="access_key"
+                    value="46a704fc-3dfc-4a97-8868-74b752060b0d"
+                  />
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="name" class="form-label visually-hidden"
+                        >Name</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Your Name"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="email" class="form-label visually-hidden"
+                        >Email</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Your Email"
+                        required
+                      />
+                    </div>
+                    <div class="col-12">
+                      <label for="message" class="form-label visually-hidden"
+                        >Message</label
+                      >
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Your Message"
+                        required
+                      ></textarea>
+                    </div>
+                    <!-- <input type="hidden" name="redirect" value="thanks.html"> -->
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn btn-primary px-4">
+                        Send Message
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center mt-4">
+          <p>&copy; 2024 AspireHub. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

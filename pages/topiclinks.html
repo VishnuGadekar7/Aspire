@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTube - Topic-Based Learning Videos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #ff5722;
+            --accent-color: #34a853;
+            --text-dark: #333;
+            --text-light: #666;
+            --text-lighter: #888;
+            --bg-light: #f9f9f9;
+            --bg-white: #ffffff;
+            --shadow-light: 0 2px 5px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 12px rgba(0,0,0,0.15);
+            --border-radius: 10px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-light);
+            transition: background-color var(--transition-speed) ease;
+        }
+        
+        body.dark-mode {
+            --text-dark: #f0f0f0;
+            --text-light: #cccccc;
+            --text-lighter: #999999;
+            --bg-light: #1a1a1a;
+            --bg-white: #2a2a2a;
+            --shadow-light: 0 2px 5px rgba(0,0,0,0.3);
+            --shadow-medium: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-white);
+            box-shadow: var(--shadow-light);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .top-nav .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .top-nav .brand i { color: var(--secondary-color); }
+        .top-nav .links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .top-nav .links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+        .top-nav .links a:hover { background: var(--bg-light); color: var(--primary-color); }
+        .top-nav .actions { display: flex; align-items: center; gap: 10px; }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--bg-white);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        .site-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .site-brand .logo {
+            color: var(--secondary-color);
+            font-size: 32px;
+            margin-right: 10px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            display: inline-block;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+        
+        .search-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .search-box input {
+            padding: 15px 20px;
+            padding-left: 50px;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            width: 100%;
+            font-size: 16px;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            box-shadow: var(--shadow-light);
+            transition: all var(--transition-speed) ease;
+            outline: none;
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-lighter);
+            font-size: 18px;
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-button {
+            padding: 8px 15px;
+            background-color: var(--bg-white);
+            color: var(--text-light);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .filter-button:hover, .filter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .topic-section {
+            margin-bottom: 50px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-light);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .topic-section:hover {
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .topic-heading {
+            position: relative;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            padding-bottom: 10px;
+        }
+        
+        .topic-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+        
+        .see-all {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .see-all:hover {
+            color: var(--secondary-color);
+        }
+        
+        .see-all i {
+            margin-left: 5px;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .video-card {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: all var(--transition-speed) ease;
+            background-color: var(--bg-white);
+            border: 1px solid rgba(0,0,0,0.05);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all var(--transition-speed) ease;
+            opacity: 0.8;
+        }
+        
+        .video-card:hover .play-button {
+            background-color: rgba(255,0,0,0.7);
+            opacity: 1;
+        }
+        
+        .play-button i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+        
+        .video-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: var(--text-dark);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .video-description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-lighter);
+            margin-top: auto;
+        }
+        
+        .video-views {
+            display: flex;
+            align-items: center;
+        }
+        
+        .video-views i {
+            margin-right: 5px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 50px 0;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            display: none;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-medium);
+            transition: all var(--transition-speed) ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .topic-section {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .site-brand .logo {
+                font-size: 24px;
+            }
+            
+            .filter-container {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start;
+            }
+            
+            .filter-button {
+                flex-shrink: 0;
+            }
+            
+            .topic-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .see-all {
+                margin-top: 10px;
+            }
+        }
+        footer {
+        background: #343a40;
+        color: white;
+        padding: 40px 0;
+      }
+      .social-icon {
+        font-size: 1.5rem;
+        margin: 0 10px;
+        color: white;
+      }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-nav">
+            <a href="../dashboard.html" class="brand"><i class="fas fa-graduation-cap"></i> AspireHub</a>
+            <div class="links">
+                <a href="../dashboard.html">Dashboard</a>
+                <a href="../dashboard.html#mocks">Mocks</a>
+                <a href="../note.html">Notes</a>
+                <a href="./topiclinks.html" style="color: var(--primary-color); background: var(--bg-light);">Topic Links</a>
+            </div>
+            <div class="actions">
+                <button class="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+            </div>
+        </div>
+        <div class="site-brand">
+            <i class="fas fa-graduation-cap logo"></i>
+            <h1>AspireHub</h1>
+        </div>
+        <p class="subtitle">Explore our curated collection of educational videos organized by subject</p>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search videos by title, topic, or keywords...">
+            </div>
+        </div>
+        <div class="filter-container">
+            <button class="filter-button active" data-filter="all">All Subjects</button>
+            <button class="filter-button" data-filter="physics">Physics</button>
+            <button class="filter-button" data-filter="chemistry">Chemistry</button>
+            <button class="filter-button" data-filter="mathematics">Mathematics</button>
+        </div>
+    </header>
+    
+    <main>
+        <div class="no-results">
+            <i class="fas fa-search fa-3x"></i>
+            <p>No videos match your search. Try different keywords.</p>
+        </div>
+        
+        <!-- Physics Topic -->
+        <section class="topic-section" data-topic="physics">
+            <div class="topic-header">
+                <h2 class="topic-heading">Physics Concepts</h2>
+                <a href="#" class="see-all">See all videos <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/dbvr-L5rxdg?si=GTbhIrs9rROg7JpM" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/rotational.jpg" alt="Rotational Dynamics">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">26:51</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Rotational Dynamics</div>
+                        <div class="video-description">
+                            Learn Rotational Dynamics from scratch with this comprehensive lecture covering basics to advanced concepts. Includes detailed explanations and numericals to help you master the topic.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 6.2M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Updated</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/_YLOncF58MM?si=VWx7vizbWEDtL_wu" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/wave.jpg" alt="Wave Optics">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">48:27</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Wave Optics: From Basic Principles to Advanced Applications</div>
+                        <div class="video-description">
+                          Comprehensive guide to Wave Optics starting from fundamental concepts and progressing to complex applications. Includes numericals and visual explanations of wave phenomena.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 5.1M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Popular</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 3 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/Y6IDXanyXQk?si=uJLJOGnTsPcSXkVE" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/semiconductor.jpg" alt="Semiconductor Devices">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">13:15</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Semiconductor Devices: Complete Guide</div>
+                        <div class="video-description">
+                          Learn about Semiconductor Devices from first principles. This tutorial covers p-n junctions, diodes, transistors, and their applications with practical numericals and examples.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 2.3M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Trending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Chemistry Topic -->
+        <section class="topic-section" data-topic="chemistry">
+            <div class="topic-header">
+                <h2 class="topic-heading">Chemistry Concepts</h2>
+                <a href="#" class="see-all">See all videos <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/4i1MUWJoI0U?si=-m1EFqzOkZNQDEv4" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/thermo.jpg" alt="ThermoDynamics">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">10:15</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Thermodynamics: Fundamentals and Applications</div>
+                        <div class="video-description">
+                            A comprehensive introduction to thermodynamics covering laws, enthalpy, entropy, free energy, and their applications in chemical processes. Perfect for beginners and advanced students.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 3.5M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Featured</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/-14gHzT6Gsw?si=sNh410j9wGW2mlR9" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/alcohol.jpg" alt="Organic Chemistry">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">23:40</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Alcohols, Phenols, and Carboxylic Acids</div>
+                        <div class="video-description">
+                            Comprehensive guide to organic functional groups: alcohols, phenols, and carboxylic acids. Learn about their properties, preparation methods, reactions, and mechanisms with practical examples.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 1.8M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> New</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mathematics Topic -->
+        <section class="topic-section" data-topic="mathematics">
+            <div class="topic-header">
+                <h2 class="topic-heading">Mathematics</h2>
+                <a href="#" class="see-all">See all videos <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/INWw7BuxQ2I?si=-qbu0n_B_ukYYZEv" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/differential.jpg" alt="Differential Equations">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">25:18</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Mastering Differential Equations</div>
+                        <div class="video-description">
+                            Quick and effective methods to solve differential equations of various orders and types. Learn systematic approaches with step-by-step examples and visualizations.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 4.7M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Most Viewed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="video-card">
+                    <a href="https://www.youtube.com/live/fObB6OUzqm8?si=BTSJGVsW5MZK-QIg" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/logic.jpg" alt="Logic Gates">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">45:22</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Logic Gates and Digital Circuit Design</div>
+                        <div class="video-description">
+                            Complete tutorial on logic gates, Boolean algebra, and digital circuit design. Learn how to solve complex problems and design efficient digital systems with practical examples.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 2.1M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Live Recording</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 3 -->
+                <div class="video-card">
+                    <a href="https://youtu.be/rfG8ce4nNh0?si=nR0vJYvFLcHa-qlV" target="_blank">
+                        <div class="video-thumbnail">
+                            <img src="../assets/images/integrals.jpg" alt="Integration">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="video-duration">48:45</div>
+                        </div>
+                    </a>
+                    <div class="video-info">
+                        <div class="video-title">Complete Integration Masterclass</div>
+                        <div class="video-description">
+                            Master integration techniques from basic to advanced. Learn substitution, parts, partial fractions, and trigonometric integrals with comprehensive examples and practical applications.
+                        </div>
+                        <div class="video-meta">
+                            <div class="video-views"><i class="fas fa-eye"></i> 3.9M views</div>
+                            <div class="video-date"><i class="fas fa-calendar-alt"></i> Top Rated</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <footer>
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <h3>AspireHub</h3>
+            <p class="mt-3">
+              <strong>Phone:</strong> +1 234 567 890<br />
+              <strong>Email:</strong> info@aspirehub.com
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-6">
+            <h4>Quick Links</h4>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#hero" class="text-decoration-none text-light">Home</a>
+              </li>
+              <li>
+                <a href="#aboutus" class="text-decoration-none text-light"
+                  >About</a
+                >
+              </li>
+              <li>
+                <a href="#mocks" class="text-decoration-none text-light"
+                  >Mocks</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-decoration-none text-light">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <section id="contact" class="py-5">
+          <div class="container">
+            <h2 class="text-center mb-5">Contact Us</h2>
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <form action="https://api.web3forms.com/submit" method="post">
+                  <input
+                    type="hidden"
+                    name="access_key"
+                    value="46a704fc-3dfc-4a97-8868-74b752060b0d"
+                  />
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="name" class="form-label visually-hidden"
+                        >Name</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Your Name"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="email" class="form-label visually-hidden"
+                        >Email</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Your Email"
+                        required
+                      />
+                    </div>
+                    <div class="col-12">
+                      <label for="message" class="form-label visually-hidden"
+                        >Message</label
+                      >
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Your Message"
+                        required
+                      ></textarea>
+                    </div>
+                    <!-- <input type="hidden" name="redirect" value="thanks.html"> -->
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn btn-primary px-4">
+                        Send Message
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="text-center mt-4">
+          <p>&copy; 2024 AspireHub. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <script>
+        // Search functionality
+        const searchBox = document.querySelector('.search-box input');
+        const videoCards = document.querySelectorAll('.video-card');
+        const topicSections = document.querySelectorAll('.topic-section');
+        const noResults = document.querySelector('.no-results');
+        
+        searchBox.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let foundAny = false;
+            
+            topicSections.forEach(section => {
+                let foundInSection = false;
+                
+                const cards = section.querySelectorAll('.video-card');
+                cards.forEach(card => {
+                    const title = card.querySelector('.video-title').textContent.toLowerCase();
+                    const description = card.querySelector('.video-description').textContent.toLowerCase();
+                    const topic = section.getAttribute('data-topic').toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm) || topic.includes(searchTerm)) {
+                        card.style.display = '';
+                        foundInSection = true;
+                        foundAny = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                section.style.display = foundInSection ? '' : 'none';
+            });
+            
+            noResults.style.display = foundAny ? 'none' : 'block';
+        });
+        
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-button');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Toggle active class
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Clear search
+                searchBox.value = '';
+                
+                // Show/hide sections based on filter
+                if (filter === 'all') {
+                    topicSections.forEach(section => {
+                        section.style.display = '';
+                        section.querySelectorAll('.video-card').forEach(card => {
+                            card.style.display = '';
+                        });
+                    });
+                } else {
+                    topicSections.forEach(section => {
+                        if (section.getAttribute('data-topic') === filter) {
+                            section.style.display = '';
+                            section.querySelectorAll('.video-card').forEach(card => {
+                                card.style.display = '';
+                            });
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                }
+                
+                noResults.style.display = 'none';
+            });
+        });
+        
+        // Dark mode toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            
+            // Save preference to localStorage
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Back to top button
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+   
+</body>
+</html>

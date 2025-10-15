@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Test - Live Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+       #resultChartContainer {
+            display: none;
+        }
+        :root {
+            --primary-color: #4a90e2;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            gap: 20px;
+        }
+
+        .left-panel, .right-panel {
+            width: 25%;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .middle-panel {
+            width: 50%;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .question-panel, .answer-area {
+            margin: 20px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        #resultChartContainer {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px 0;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-wrap {
+            width: 100%;
+            background: #ecf0f1;
+            border-radius: 6px;
+            overflow: hidden;
+            height: 12px;
+            margin: 12px 0 8px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--success-color);
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+        .palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .palette button {
+            flex: unset;
+            padding: 8px 0;
+            font-size: 14px;
+            border-radius: 6px;
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        .palette button.answered { background: rgba(46,204,113,0.85); color: #fff; }
+        .palette button.review { background: #8e44ad; color: #fff; }
+        .palette button.current { box-shadow: 0 0 0 2px #34495e inset; }
+
+        .question-number {
+            margin: 15px 0;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .webcam-feed {
+            width: 100%;
+            height: 200px;
+            background: #2c3e50;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .ai-alerts {
+            color: var(--danger-color);
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(231, 76, 60, 0.1);
+        }
+        .webcam-feed {
+            width: 100%;
+            height: 200px;
+            background: #2c3e50;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        #webcamVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <style>
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .left-panel, .middle-panel, .right-panel {
+                width: 100%;
+                padding: 10px;
+            }
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+            .question-panel, .answer-area {
+                padding: 18px;
+            }
+            #resultChartContainer {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div id="testtt">Physics Test - Class XII</div>
+        <div id="timer">⏳ Time Remaining: <span id="time-left">10:00</span></div>
+        <div id="antest"><a href="/index.html#mocks" style="color: white; text-decoration: none;">↩ Take Another Test</a></div>
+    </div>
+
+    <div class="container" id="test-container">
+        <div class="left-panel">
+            <h3>📋 Instructions</h3>
+            <ul>
+                <li>All questions are mandatory</li>
+                <li>No negative marking</li>
+                <li>Timer cannot be paused</li>
+                <li>Full-screen mode recommended</li>
+            </ul>
+        </div>
+        
+        <div class="middle-panel">
+            <div class="progress-text" id="progressText">Progress: 0%</div>
+            <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+            <div class="question-number">Question ${currentQuestionIndex + 1} of ${questions.length}</div>
+            <div class="question-panel" id="question-panel">
+                <h3 id="question-text">Loading question...</h3>
+            </div>
+            <div class="answer-area" id="answer-area">
+                <form id="quiz-form"></form>
+            </div>
+            <div class="buttons" style="margin-top:10px">
+                <button class="btn-secondary" id="toggleReviewBtn" type="button">Mark for Review</button>
+            </div>
+            <div class="buttons">
+                <button class="btn-secondary" onclick="prevQuestion()">← Previous</button>
+                <button class="btn-primary" onclick="nextQuestion()">Next →</button>
+            </div>
+            <div class="question-panel" style="margin-top:16px">
+                <h4 style="margin:0 0 8px 0">Question Palette</h4>
+                <div class="palette" id="palette"></div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+          <h3>📷 Webcam Feed</h3>
+          <div class="webcam-feed">
+              <video id="webcamVideo" autoplay muted playsinline></video>
+          </div>
+          <h3>🚨 AI Monitoring</h3>
+          <p class="ai-alerts">⚠️ No suspicious activity detected</p>
+      </div>
+    </div>
+
+    <div id="resultChartContainer">
+        <h3>📊 Your Result Breakdown</h3>
+        <canvas id="resultChart"></canvas>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-primary" id="downloadPdfBtn">Download PDF</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script>
+        // Enhanced JavaScript code
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let incorrect = 0;
+        let unanswered = 0;
+        let timeLeft = 600;
+        let timerInterval;
+        let webcamStream = null;
+        let isWebcamActive = false;
+        let reviewSet = new Set();
+        let selectedAnswers = new Map();
+
+        async function startWebcam() {
+            try {
+                webcamStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: "user",
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false
+                });
+                
+                const videoElement = document.getElementById('webcamVideo');
+                videoElement.srcObject = webcamStream;
+                isWebcamActive = true;
+            } catch (err) {
+                console.error('Error accessing webcam:', err);
+                document.querySelector('.ai-alerts').textContent = 
+                    '⚠️ Webcam access denied - test might be invalidated!';
+            }
+        }
+
+        function stopWebcam() {
+            if (webcamStream) {
+                webcamStream.getTracks().forEach(track => track.stop());
+                isWebcamActive = false;
+            }
+        }
+        async function loadQuestions() {
+            try {
+                const response = await fetch('./chemque.json');
+                questions = await response.json();
+                unanswered = questions.length;
+                restoreState();
+                document.querySelector('.question-number').textContent = 
+                    `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+                displayQuestion();
+                startTimer();
+                initializeMonitoring();
+                renderPalette();
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                alert('Failed to load questions. Please try again.');
+            }
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const questionData = questions[currentQuestionIndex];
+                document.getElementById('question-text').textContent = questionData.question;
+                const answerArea = document.getElementById('quiz-form');
+                answerArea.innerHTML = '';
+                
+                questionData.options.forEach((option, index) => {
+                    const optionId = `option-${index}`;
+                    answerArea.innerHTML += `
+                        <div class="option">
+                            <input type="radio" name="answer" id="${optionId}" value="${option}">
+                            <label for="${optionId}">${option}</label>
+                        </div>
+                    `;
+                });
+
+                // restore selection if exists
+                const saved = selectedAnswers.get(currentQuestionIndex);
+                if (saved) {
+                    const input = [...document.querySelectorAll('input[name="answer"]')].find(i => i.value === saved);
+                    if (input) input.checked = true;
+                }
+
+                updatePaletteState();
+                updateProgress();
+                updateReviewButton();
+            } else {
+                endTest();
+            }
+        }
+
+        function handleAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                unanswered--;
+                if (selectedOption.value === questions[currentQuestionIndex].answer) {
+                    score++;
+                } else {
+                    incorrect++;
+                }
+                selectedAnswers.set(currentQuestionIndex, selectedOption.value);
+                persistState();
+            }
+        }
+
+        function nextQuestion() {
+            handleAnswer();
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                document.querySelector('.question-number').textContent = 
+                    `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+                displayQuestion();
+            } else {
+                endTest();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                document.querySelector('.question-number').textContent = 
+                    `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+                displayQuestion();
+            }
+        }
+
+        function renderPalette() {
+            const container = document.getElementById('palette');
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = (i + 1).toString();
+                btn.onclick = () => {
+                    currentQuestionIndex = i;
+                    document.querySelector('.question-number').textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+                    displayQuestion();
+                };
+                if (selectedAnswers.has(i)) btn.classList.add('answered');
+                if (reviewSet.has(i)) btn.classList.add('review');
+                if (i === currentQuestionIndex) btn.classList.add('current');
+                container.appendChild(btn);
+            }
+        }
+
+        function updatePaletteState() { renderPalette(); }
+
+        function updateProgress() {
+            const answeredCount = selectedAnswers.size;
+            const percent = questions.length ? Math.round((answeredCount / questions.length) * 100) : 0;
+            const bar = document.getElementById('progressBar');
+            const text = document.getElementById('progressText');
+            if (bar) bar.style.width = percent + '%';
+            if (text) text.textContent = `Progress: ${percent}% (${answeredCount}/${questions.length})`;
+        }
+
+        function updateReviewButton() {
+            const btn = document.getElementById('toggleReviewBtn');
+            if (!btn) return;
+            btn.textContent = reviewSet.has(currentQuestionIndex) ? 'Unmark Review' : 'Mark for Review';
+        }
+
+        function toggleReview() {
+            if (reviewSet.has(currentQuestionIndex)) reviewSet.delete(currentQuestionIndex);
+            else reviewSet.add(currentQuestionIndex);
+            updateReviewButton();
+            updatePaletteState();
+            persistState();
+        }
+
+        function persistState() {
+            try {
+                const state = {
+                    currentQuestionIndex,
+                    score,
+                    incorrect,
+                    unanswered,
+                    selectedAnswers: Array.from(selectedAnswers.entries()),
+                    reviewSet: Array.from(reviewSet.values()),
+                    timeLeft
+                };
+                localStorage.setItem('chem-mock-state', JSON.stringify(state));
+            } catch (_) {}
+        }
+
+        function restoreState() {
+            try {
+                const raw = localStorage.getItem('chem-mock-state');
+                if (!raw) return;
+                const s = JSON.parse(raw);
+                if (!s) return;
+                currentQuestionIndex = s.currentQuestionIndex || 0;
+                score = s.score || 0;
+                incorrect = s.incorrect || 0;
+                unanswered = s.unanswered ?? questions.length;
+                selectedAnswers = new Map(s.selectedAnswers || []);
+                reviewSet = new Set(s.reviewSet || []);
+                if (typeof s.timeLeft === 'number') timeLeft = s.timeLeft;
+            } catch (_) {}
+        }
+
+        function startTimer() {
+            const timerElement = document.getElementById('time-left');
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endTest();
+                }
+                timeLeft--;
+                persistState();
+            }, 1000);
+        }
+
+        function initializeMonitoring() {
+            // Add webcam integration logic here
+            startWebcam();
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    document.querySelector('.ai-alerts').textContent = 
+                        '⚠️ Keyboard shortcuts disabled during test!';
+                }
+            });
+            // Add full screen check
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    document.querySelector('.ai-alerts').textContent = 
+                        '⚠️ Please remain in fullscreen mode!';
+                }
+            });
+
+            // Prevent context menu
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                document.querySelector('.ai-alerts').textContent = 
+                    '⚠️ Right-click disabled during test!';
+            });
+
+            // Add visibility change detection
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState !== 'visible') {
+                    document.querySelector('.ai-alerts').textContent = 
+                        '⚠️ Tab switch detected! This will be reported.';
+                }
+            });
+        }
+
+        function endTest() {
+          stopWebcam();
+          document.getElementById('test-container').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('testtt').style.display = 'none';
+            document.getElementById('antest').style.display = 'none';
+            document.getElementById('resultChartContainer').style.display = 'block';
+            const ctx = document.getElementById('resultChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Correct', 'Incorrect', 'Unattempted', 'Total'],
+                    datasets: [{
+                        label: 'Questions',
+                        data: [score, incorrect, unanswered, questions.length],
+                        backgroundColor: [
+                            'rgba(46, 204, 113, 0.8)',
+                            'rgba(231, 76, 60, 0.8)',
+                            'rgba(241, 196, 15, 0.8)',
+                            'rgba(149, 165, 166, 0.8)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            if (downloadBtn) {
+                downloadBtn.onclick = () => {
+                    const { jsPDF } = window.jspdf || {};
+                    if (!jsPDF) return alert('PDF library failed to load.');
+                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+                    const margin = 40;
+                    let y = margin;
+
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(18);
+                    pdf.text('Mock Test Result - Chemistry', margin, y);
+                    y += 24;
+
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFontSize(12);
+                    const summary = [
+                        `Total Questions: ${questions.length}`,
+                        `Correct: ${score}`,
+                        `Incorrect: ${incorrect}`,
+                        `Unattempted: ${unanswered}`
+                    ];
+                    summary.forEach(line => { pdf.text(line, margin, y); y += 18; });
+                    y += 6;
+
+                    const canvas = document.getElementById('resultChart');
+                    if (canvas) {
+                        const imgData = canvas.toDataURL('image/png', 1.0);
+                        const imgWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+                        const imgHeight = (canvas.height / canvas.width) * imgWidth;
+                        pdf.addImage(imgData, 'PNG', margin, y, imgWidth, imgHeight);
+                        y += imgHeight + 20;
+                    }
+
+                    // Questions detail
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFontSize(14);
+                    pdf.text('Question Details', margin, y);
+                    y += 16;
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFontSize(11);
+
+                    const pageWidth = pdf.internal.pageSize.getWidth();
+                    const pageHeight = pdf.internal.pageSize.getHeight();
+                    const contentWidth = pageWidth - margin * 2;
+
+                    for (let i = 0; i < questions.length; i++) {
+                        const q = questions[i];
+                        // Add page if near bottom
+                        if (y > pageHeight - margin - 80) {
+                            pdf.addPage();
+                            y = margin;
+                        }
+                        const qTitle = `${i + 1}. ${q.question}`;
+                        const wrappedQ = pdf.splitTextToSize(qTitle, contentWidth);
+                        pdf.text(wrappedQ, margin, y);
+                        y += wrappedQ.length * 14;
+
+                        // Options
+                        const chosen = selectedAnswers.get(i);
+                        for (let opt of q.options) {
+                            const mark = (chosen === opt) ? '[x]' : '[ ]';
+                            const line = `${mark} ${opt}`;
+                            const wrappedOpt = pdf.splitTextToSize(line, contentWidth);
+                            if (y > pageHeight - margin - 40) { pdf.addPage(); y = margin; }
+                            pdf.text(wrappedOpt, margin + 12, y);
+                            y += wrappedOpt.length * 14;
+                        }
+                        y += 6;
+                    }
+
+                    pdf.save('chemistry-result.pdf');
+                };
+            }
+        }
+
+        window.onload = async () => {
+            try {
+                await document.documentElement.requestFullscreen();
+            } catch (error) {
+                console.log('Fullscreen error:', error);
+            }
+            loadQuestions();
+        };
+
+        document.addEventListener('click', (e) => {
+            if (e.target && e.target.id === 'toggleReviewBtn') {
+                toggleReview();
+            }
+        });
+    </script>
+</body>
+</html>

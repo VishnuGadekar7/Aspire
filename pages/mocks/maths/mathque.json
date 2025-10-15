@@ -1,0 +1,270 @@
+
+  [
+    {
+      "question": "What is the derivative of x^5?",
+      "options": ["5x^4", "x^4", "5x^6", "x^5"],
+      "answer": "5x^4"
+    },
+    {
+      "question": "Evaluate lim (x → 0) (sin 2x) / (x).",
+      "options": ["0", "1", "2", "∞"],
+      "answer": "2"
+    },
+    {
+      "question": "Find the integral of e^(3x).",
+      "options": ["(1/3)e^(3x) + C", "3e^(3x) + C", "e^(3x) + C", "(1/2)e^(3x) + C"],
+      "answer": "(1/3)e^(3x) + C"
+    },
+    {
+      "question": "The sum of the roots of the quadratic equation 2x² - 3x + 1 = 0 is:",
+      "options": ["3/2", "-3/2", "1", "-1"],
+      "answer": "3/2"
+    },
+    {
+      "question": "What is the solution of 3x - 7 = 2?",
+      "options": ["1", "3", "4", "5"],
+      "answer": "3"
+    },
+    {
+      "question": "What is the derivative of cos x?",
+      "options": ["sin x", "-sin x", "cos x", "-cos x"],
+      "answer": "-sin x"
+    },
+    {
+      "question": "If f(x) = x³ - 3x² + 4, what is f'(x)?",
+      "options": ["3x² - 6x", "x² - 3x", "3x - 6", "x² + 2x"],
+      "answer": "3x² - 6x"
+    },
+    {
+      "question": "Evaluate ∫ e^x dx.",
+      "options": ["e^x + C", "x e^x + C", "ln e^x + C", "e^(x+1) + C"],
+      "answer": "e^x + C"
+    },
+    {
+      "question": "What is the area under the curve of f(x) = 2x from x = 1 to x = 3?",
+      "options": ["6", "8", "10", "12"],
+      "answer": "8"
+    },
+    {
+      "question": "Find the sum of the first 50 natural numbers.",
+      "options": ["1275", "1225", "1325", "1475"],
+      "answer": "1275"
+    },
+    {
+      "question": "Find the probability of getting a prime number when rolling a die.",
+      "options": ["1/3", "1/2", "2/3", "5/6"],
+      "answer": "1/2"
+    },
+    {
+      "question": "What is the probability of getting a sum of 9 when rolling two dice?",
+      "options": ["1/9", "1/12", "1/8", "1/6"],
+      "answer": "1/9"
+    },
+    {
+      "question": "Find the equation of a line passing through (3,4) with slope 2.",
+      "options": ["y = 2x + 1", "y = 2x - 2", "y = 2x + 4", "y = 2x - 2"],
+      "answer": "y = 2x - 2"
+    },
+    {
+      "question": "The roots of x² - 6x + 9 = 0 are:",
+      "options": ["3, 3", "2, 3", "1, 3", "3, 4"],
+      "answer": "3, 3"
+    },
+    {
+      "question": "Find the derivative of ln(2x).",
+      "options": ["1/2x", "2/x", "1/x", "x/2"],
+      "answer": "1/x"
+    },
+    {
+      "question": "Find the sum of an arithmetic series with first term 7, common difference 3, and 15 terms.",
+      "options": ["345", "355", "360", "375"],
+      "answer": "345"
+    },
+    {
+      "question": "Evaluate lim (x → ∞) (3x² + 5x) / (6x² - 2x).",
+      "options": ["1/2", "3/6", "0", "∞"],
+      "answer": "1/2"
+    },
+    {
+      "question": "Find the derivative of tan(3x).",
+      "options": ["3 sec²(3x)", "sec²(3x)", "-3 sec²(3x)", "-sec²(3x)"],
+      "answer": "3 sec²(3x)"
+    },
+    {
+      "question": "Evaluate ∫ x e^x dx.",
+      "options": ["(x-1)e^x + C", "(x+1)e^x + C", "x e^x - e^x + C", "e^x + C"],
+      "answer": "x e^x - e^x + C"
+    },
+    {
+      "question": "Find the maximum value of f(x) = -x² + 6x - 5.",
+      "options": ["4", "5", "6", "7"],
+      "answer": "4"
+    },
+    {
+      "question": "Find the sum of the infinite geometric series 8 + 4 + 2 + ...",
+      "options": ["12", "16", "10", "8"],
+      "answer": "16"
+    },
+    {
+      "question": "Find the equation of a circle with center (1,-2) and radius 4.",
+      "options": ["(x - 1)² + (y + 2)² = 4", "(x - 1)² + (y + 2)² = 16", "(x + 1)² + (y - 2)² = 16", "(x - 2)² + (y - 1)² = 16"],
+      "answer": "(x - 1)² + (y + 2)² = 16"
+    },
+    {
+      "question": "Evaluate ∫ cosec² x dx.",
+      "options": ["-cot x + C", "cot x + C", "-tan x + C", "tan x + C"],
+      "answer": "-cot x + C"
+    },
+    {
+      "question": "Find the determinant of the matrix [[2,3],[4,5]].",
+      "options": ["-2", "2", "-3", "3"],
+      "answer": "-2"
+    },
+    {
+      "question": "Find the equation of the plane passing through (1,2,3) and parallel to xy-plane.",
+      "options": ["z = 3", "y = 2", "x = 1", "xy = 6"],
+      "answer": "z = 3"
+    },
+    {
+      "question": "Find the rank of the matrix [[1,2,3],[4,5,6],[7,8,9]].",
+      "options": ["3", "2", "1", "0"],
+      "answer": "2"
+    },
+    {
+      "question": "What is the Fourier series of f(x) = x² in (-π, π)?",
+      "options": ["π²/3 + Σ an cos(nx)", "Σ an sin(nx)", "Σ bn cos(nx)", "π²/4 + Σ an cos(nx)"],
+      "answer": "π²/3 + Σ an cos(nx)"
+    },
+  
+    {
+      "question": "What is the derivative of sin(x^2)?",
+      "options": ["cos(x^2)", "2x cos(x^2)", "-sin(x^2)", "2x sin(x^2)"],
+      "answer": "2x cos(x^2)"
+    },
+    {
+      "question": "Evaluate lim (x → 0) (1 - cos x)/x².",
+      "options": ["0", "1", "1/2", "∞"],
+      "answer": "1/2"
+    },
+    {
+      "question": "Find the integral of x e^x.",
+      "options": ["x e^x - e^x + C", "e^x + C", "x e^x + C", "e^(x+1) + C"],
+      "answer": "x e^x - e^x + C"
+    },
+    {
+      "question": "The sum of the roots of the equation x² - 5x + 6 = 0 is:",
+      "options": ["5", "-5", "6", "-6"],
+      "answer": "5"
+    },
+    {
+      "question": "Solve for x: log(x) + log(x-2) = log(3).",
+      "options": ["1", "3", "2", "4"],
+      "answer": "3"
+    },
+    {
+      "question": "Find the derivative of tan^(-1)(x).",
+      "options": ["1/(1 + x²)", "x/(1 + x²)", "-1/(1 + x²)", "1/x"],
+      "answer": "1/(1 + x²)"
+    },
+    {
+      "question": "Evaluate ∫ (x² + 3x + 2) dx.",
+      "options": ["x³/3 + 3x²/2 + 2x + C", "x³/2 + 3x²/2 + 2x + C", "x³ + 3x² + 2x + C", "x³/3 + x² + 2x + C"],
+      "answer": "x³/3 + 3x²/2 + 2x + C"
+    },
+    {
+      "question": "What is the equation of a line passing through (4,2) with slope 5?",
+      "options": ["y = 5x + 2", "y = 5x - 2", "y = 5x - 18", "y = 5x + 18"],
+      "answer": "y = 5x - 18"
+    },
+    {
+      "question": "Find the sum of the first 20 terms of an arithmetic progression with first term 4 and common difference 3.",
+      "options": ["740", "420", "440", "380"],
+      "answer": "440"
+    },
+    {
+      "question": "Find the sum of the infinite geometric series 5 + 5/3 + 5/9 + ...",
+      "options": ["10", "7.5", "15/2", "20"],
+      "answer": "15/2"
+    },
+    {
+      "question": "Find the roots of the equation x² - 3x - 4 = 0.",
+      "options": ["-1, 4", "1, -4", "3, -4", "-3, 4"],
+      "answer": "-1, 4"
+    },
+    {
+      "question": "What is the probability of getting a number greater than 4 when rolling a die?",
+      "options": ["1/3", "1/2", "2/3", "5/6"],
+      "answer": "1/3"
+    },
+    {
+      "question": "Evaluate lim (x → ∞) (2x² + 5x) / (4x² - x).",
+      "options": ["1/2", "2/4", "0", "∞"],
+      "answer": "1/2"
+    },
+    {
+      "question": "Find the derivative of cos(3x).",
+      "options": ["3 sin(3x)", "-3 sin(3x)", "-sin(3x)", "sin(3x)"],
+      "answer": "-3 sin(3x)"
+    },
+    {
+      "question": "Evaluate ∫ sec²(2x) dx.",
+      "options": ["1/2 tan(2x) + C", "tan(2x) + C", "1/3 tan(3x) + C", "1/4 tan(4x) + C"],
+      "answer": "1/2 tan(2x) + C"
+    },
+    {
+      "question": "Find the derivative of e^(sin x).",
+      "options": ["cos x e^(sin x)", "sin x e^(sin x)", "-cos x e^(sin x)", "-sin x e^(sin x)"],
+      "answer": "cos x e^(sin x)"
+    },
+    {
+      "question": "Find the maximum value of f(x) = -2x² + 8x - 5.",
+      "options": ["7", "5", "3", "9"],
+      "answer": "7"
+    },
+    {
+      "question": "Find the rank of the matrix [[2,4],[6,12]].",
+      "options": ["1", "2", "3", "0"],
+      "answer": "1"
+    },
+    {
+      "question": "Find the equation of a plane passing through (2,-1,3) and parallel to the yz-plane.",
+      "options": ["x = 2", "y = -1", "z = 3", "xy = 6"],
+      "answer": "x = 2"
+    },
+    {
+      "question": "Find the volume of a sphere with radius 5.",
+      "options": ["500π/3", "100π/3", "125π/3", "250π/3"],
+      "answer": "500π/3"
+    },
+    {
+      "question": "Evaluate ∫ x sin x dx.",
+      "options": ["-x cos x + sin x + C", "x cos x - sin x + C", "x sin x + C", "cos x + C"],
+      "answer": "-x cos x + sin x + C"
+    },
+    {
+      "question": "Find the solution to dy/dx = 2x.",
+      "options": ["y = x² + C", "y = 2x² + C", "y = x² - C", "y = 2x² - C"],
+      "answer": "y = x² + C"
+    },
+    {
+      "question": "Evaluate lim (x → 0) (x - sin x)/x³.",
+      "options": ["0", "1/6", "1/3", "∞"],
+      "answer": "1/6"
+    },
+    {
+      "question": "If A = {1,2,3,4,5} and B = {3,4,5,6,7}, find A ∩ B.",
+      "options": ["{1,2}", "{3,4,5}", "{6,7}", "{1,2,6,7}"],
+      "answer": "{3,4,5}"
+    },
+    {
+      "question": "Find the slope of the line passing through (1,2) and (3,6).",
+      "options": ["2", "3", "4", "5"],
+      "answer": "2"
+    },
+    {
+      "question": "What is the sum of all even numbers between 1 and 100?",
+      "options": ["2450", "2550", "2500", "2600"],
+      "answer": "2550"
+    }
+   
+  ]

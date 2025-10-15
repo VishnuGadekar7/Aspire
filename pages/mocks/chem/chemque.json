@@ -1,0 +1,102 @@
+[
+  {
+    "question": "Which of the following has the highest electronegativity?",
+    "options": [
+      "Sodium",
+      "Chlorine",
+      "Oxygen",
+      "Fluorine"
+    ],
+    "answer": "Fluorine"
+  },
+  {
+    "question": "What is the pH of a neutral solution at 25°C?",
+    "options": [
+      "7",
+      "5",
+      "9",
+      "3"
+    ],
+    "answer": "7"
+  },
+  {
+    "question": "Which gas is evolved when zinc reacts with dilute hydrochloric acid?",
+    "options": [
+      "Oxygen",
+      "Hydrogen",
+      "Nitrogen",
+      "Carbon dioxide"
+    ],
+    "answer": "Hydrogen"
+  },
+  {
+    "question": "What is the molecular formula of benzene?",
+    "options": [
+      "C6H12",
+      "C6H6",
+      "C5H10",
+      "C7H8"
+    ],
+    "answer": "C6H6"
+  },
+  {
+    "question": "Which law states that equal volumes of gases at the same temperature and pressure contain equal numbers of molecules?",
+    "options": [
+      "Boyle's Law",
+      "Charles' Law",
+      "Avogadro's Law",
+      "Graham's Law"
+    ],
+    "answer": "Avogadro's Law"
+  },
+  {
+    "question": "What is the oxidation state of sulfur in H2SO4?",
+    "options": [
+      "+4",
+      "+6",
+      "+2",
+      "0"
+    ],
+    "answer": "+6"
+  },
+  {
+    "question": "Which type of bond is present in NaCl?",
+    "options": [
+      "Covalent bond",
+      "Ionic bond",
+      "Metallic bond",
+      "Hydrogen bond"
+    ],
+    "answer": "Ionic bond"
+  },
+  {
+    "question": "Which catalyst is used in the Haber process for ammonia synthesis?",
+    "options": [
+      "Platinum",
+      "Nickel",
+      "Iron",
+      "Copper"
+    ],
+    "answer": "Iron"
+  },
+  {
+    "question": "What is the IUPAC name of CH3COOH?",
+    "options": [
+      "Methanoic acid",
+      "Ethanoic acid",
+      "Propanol",
+      "Acetone"
+    ],
+    "answer": "Ethanoic acid"
+  },
+  {
+    "question": "Which element is the most abundant in Earth's crust?",
+    "options": [
+      "Oxygen",
+      "Silicon",
+      "Aluminium",
+      "Iron"
+    ],
+    "answer": "Oxygen"
+  }
+]

@@ -1,0 +1,200 @@
+<!-- Hero Section with Enhanced UI -->
+<section id="hero" class="d-flex align-items-center min-vh-100 position-relative overflow-hidden">
+  <!-- Background gradient overlay -->
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-primary opacity-10"></div>
+  
+  <!-- Animated shapes for visual interest -->
+  <div class="position-absolute shape shape-1"></div>
+  <div class="position-absolute shape shape-2"></div>
+  <div class="position-absolute shape shape-3"></div>
+  
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 pe-lg-5 mb-5 mb-lg-0 text-lg-start text-center">
+        <span class="badge bg-primary text-white px-3 py-2 mb-3 rounded-pill fw-normal">Transforming Education</span>
+        <h1 class="display-3 fw-bold mb-4 text-gradient">
+          Learning Today,<br />Leading Tomorrow
+        </h1>
+        <p class="lead mb-4 text-secondary">
+          We are here to make your learning simpler, so you can soar higher in a world of endless possibilities.
+        </p>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-lg-start justify-content-center">
+          <button class="btn btn-primary btn-lg px-4 py-2 rounded-pill">Get Started</button>
+          <button class="btn btn-outline-secondary btn-lg px-4 py-2 rounded-pill">Learn More</button>
+        </div>
+        
+        <!-- Trust indicators -->
+        <div class="mt-5 d-flex flex-wrap gap-4 justify-content-lg-start justify-content-center">
+          <div class="d-flex align-items-center">
+            <div class="icon-box me-2"><i class="bi bi-mortarboard-fill"></i></div>
+            <span>10K+ Students</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="icon-box me-2"><i class="bi bi-star-fill"></i></div>
+            <span>4.9 Rating</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="icon-box me-2"><i class="bi bi-collection-fill"></i></div>
+            <span>200+ Courses</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 position-relative">
+        <!-- Image with floating effect and shadow -->
+        <div class="position-relative hero-image-wrapper">
+          <img
+            src="./media/hero.webp"
+            alt="Students learning together"
+            class="img-fluid rounded-4 shadow-lg hero-image"
+          />
+          
+          <!-- Floating card elements for visual interest -->
+          <div class="position-absolute floating-card bg-white p-3 rounded-3 shadow-sm card-1">
+            <div class="d-flex align-items-center">
+              <div class="avatar-group me-2">
+                <img src="./media/avatar-1.webp" class="avatar" alt="Student">
+                <img src="./media/avatar-2.webp" class="avatar" alt="Student">
+                <img src="./media/avatar-3.webp" class="avatar" alt="Student">
+              </div>
+              <div>
+                <p class="mb-0 small">Join 10,000+ students</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="position-absolute floating-card bg-white p-3 rounded-3 shadow-sm card-2">
+            <div class="d-flex align-items-center">
+              <div class="icon-box bg-success-soft me-2">
+                <i class="bi bi-graph-up-arrow text-success"></i>
+              </div>
+              <div>
+                <p class="mb-0 small">95% success rate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CSS to add to your stylesheet -->
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.1), rgba(25, 135, 84, 0.1));
+  }
+  
+  .text-gradient {
+    background: linear-gradient(90deg, #0d6efd, #198754);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .hero-image-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+  }
+  
+  .hero-image {
+    animation: float 6s ease-in-out infinite;
+    transition: all 0.3s ease;
+  }
+  
+  .floating-card {
+    z-index: 2;
+  }
+  
+  .card-1 {
+    top: 20%;
+    left: -5%;
+    animation: float 5s ease-in-out infinite;
+  }
+  
+  .card-2 {
+    bottom: 15%;
+    right: -5%;
+    animation: float 7s ease-in-out infinite;
+  }
+  
+  .avatar-group {
+    display: flex;
+  }
+  
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -10px;
+  }
+  
+  .avatar:first-child {
+    margin-left: 0;
+  }
+  
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+  
+  .bg-success-soft {
+    background-color: rgba(25, 135, 84, 0.1);
+  }
+  
+  .shape {
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(50px);
+  }
+  
+  .shape-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: -100px;
+    background-color: rgba(13, 110, 253, 0.2);
+  }
+  
+  .shape-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    left: -50px;
+    background-color: rgba(25, 135, 84, 0.2);
+  }
+  
+  .shape-3 {
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(255, 193, 7, 0.2);
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .floating-card {
+      display: none;
+    }
+  }
+</style>

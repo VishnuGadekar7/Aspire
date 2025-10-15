@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AspireHub - Physics Topics</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4a4a9e;
+        --primary-light: #6565b8;
+        --primary-dark: #393980;
+        --accent: #ff7043;
+        --text-dark: #333333;
+        --text-light: #666666;
+        --bg-light: #f8f9fa;
+        --card-bg: #ffffff;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --border-radius: 8px;
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
+
+      /* Navbar Styles - Keeping the existing styles */
+      header {
+        background-color: var(--primary);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 0.5rem;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: var(--transition);
+      }
+
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.991);
+        color: var(--primary-dark);
+      }
+
+      .nav-links a.active {
+        background-color: rgb(255, 255, 255);
+        color: var(--primary-dark);
+      }
+
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      /* Mobile responsive navbar styles */
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+
+        .nav-links {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--primary);
+          flex-direction: column;
+          padding: 1rem;
+          gap: 0.75rem;
+          box-shadow: var(--shadow);
+          transform: translateY(-100%);
+          opacity: 0;
+          pointer-events: none;
+          transition: var(--transition);
+        }
+
+        .nav-links.show {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: all;
+        }
+
+        .nav-links a {
+          display: block;
+          width: 100%;
+          text-align: center;
+          padding: 0.75rem;
+        }
+      }
+
+      /* Enhanced Page Content Styles */
+      .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .page-header {
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+      }
+
+      .page-header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background-color: var(--primary);
+        border-radius: 2px;
+      }
+
+      .page-header h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+      }
+
+      .page-header p {
+        font-size: 1.1rem;
+        color: var(--text-light);
+        max-width: 700px;
+      }
+
+      /* Search and Filter Section */
+      .controls-section {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow);
+      }
+
+      .search-box {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 3rem;
+        border: 1px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition);
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(74, 74, 158, 0.2);
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+      }
+
+      /* Topic Grid Layout */
+      .topics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .topic-card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .topic-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .topic-card-header {
+        padding: 1.25rem;
+        background-color: rgba(74, 74, 158, 0.05);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .topic-card-body {
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .topic-card h3 {
+        margin: 0;
+        color: var(--primary-dark);
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .topic-card p {
+        color: var(--text-light);
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+      }
+
+      .topic-card-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+      }
+
+      .topic-badge {
+        background-color: rgba(74, 74, 158, 0.1);
+        color: var(--primary);
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        display: inline-block;
+      }
+
+      .view-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        background-color: var(--primary);
+        color: white;
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+      }
+
+      .view-btn:hover {
+        background-color: var(--primary-dark);
+        color: white;
+      }
+
+      /* Pagination Controls */
+      .pagination-controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.5rem;
+        gap: 0.5rem;
+      }
+
+      .pagination-controls button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+        background-color: var(--card-bg);
+        transition: var(--transition);
+      }
+
+      .pagination-controls button:hover,
+      .pagination-controls button.active {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      /* Topic Tags and Difficulty */
+      .topic-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .topic-difficulty {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+
+      .topic-difficulty span {
+        font-size: 0.85rem;
+        color: var(--text-light);
+      }
+
+      .difficulty-dots {
+        display: flex;
+        gap: 2px;
+      }
+
+      .difficulty-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+      }
+
+      .difficulty-dot.active {
+        background-color: var(--accent);
+      }
+
+      /* Media Queries */
+      @media (max-width: 768px) {
+        .topics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .page-header h1 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">AspireHub</div>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#" class="active">Dashboard</a></li>
+          <li><a href="#mocks">Mocks</a></li>
+          <li><a href="nots.html">Notes</a></li>
+          <li><a href="topiclinks.html">Topics</a></li>
+          <li><a href="#" id="logoutButton">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Enhanced Page Content -->
+    <div class="page-container">
+      <div class="page-header">
+        <h1>Physics Topics</h1>
+        <p>
+          Comprehensive study materials for physics, organized by topics to help
+          you master each concept effectively.
+        </p>
+      </div>
+
+      <div class="controls-section">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="topicSearch"
+            placeholder="Search for topics..."
+          />
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <select class="form-select" id="sortSelect">
+              <option value="name">Sort by Name (A-Z)</option>
+              <option value="nameDesc">Sort by Name (Z-A)</option>
+              <option value="difficulty">Sort by Difficulty</option>
+              <option value="popularity">Sort by Popularity</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <select class="form-select" id="filterSelect">
+              <option value="all">All Difficulty Levels</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="topics-grid" id="topicsGrid">
+        <!-- Topics will be dynamically inserted here -->
+      </div>
+
+      <div class="pagination-controls" id="paginationControls">
+        <!-- Pagination will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <script>
+      // Toggle mobile menu (keeping existing code)
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          document.getElementById("navLinks").classList.toggle("show");
+        });
+
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", function () {
+          if (window.innerWidth <= 768) {
+            document.getElementById("navLinks").classList.remove("show");
+          }
+        });
+      });
+
+      // Enhanced topic data with additional metadata
+      const topics = [
+  {
+    name: "Motion in One Plane",
+    link: "https://drive.google.com/file/d/12gIjVxby7hVtCRAh4_-BkgmFg0UXOe1t/view?usp=drive_link",
+    difficulty: "beginner",
+    tags: ["Mechanics", "Kinematics"],
+    description: "Study of movement in a single dimension, including velocity and acceleration.",
+    popularity: 88
+  },
+  {
+    name: "Kinetic Theory of Gases",
+    link: "https://drive.google.com/file/d/1rcZpaP0Q9k2tsu5RBybHBzM5vErCInkU/view?usp=drive_link",
+    difficulty: "intermediate",
+    tags: ["Thermodynamics", "Molecular Physics"],
+    description: "Explains gas behavior through motion of molecules and statistical mechanics.",
+    popularity: 75
+  },
+  {
+    name: "Thermodynamics",
+    link: "https://drive.google.com/file/d/1l2mzIijTjQuRfLOCBY2pf0TM9TXUUjls/view?usp=drive_link",
+    difficulty: "advanced",
+    tags: ["Energy", "Heat Transfer"],
+    description: "Study of heat, temperature, energy, and work in physical systems.",
+    popularity: 85
+  },
+  {
+    name: "Oscillations",
+    link: "https://drive.google.com/file/d/1mZum0qRqk2uZLQVJpCY-vlavHW6Qt4oB/view?usp=drive_link",
+    difficulty: "intermediate", 
+    tags: ["Waves", "Periodic Motion"],
+    description: "Study of repetitive motion around an equilibrium position.",
+    popularity: 78
+  },
+  {
+    name: "Superposition of Wave",
+    link: "https://drive.google.com/file/d/1lEMqhpKgZ5hmGd10SzQd6NTU9opa4MUh/view?usp=drive_link",
+    difficulty: "intermediate",
+    tags: ["Waves", "Interference"],
+    description: "Principle explaining what happens when two or more waves overlap.",
+    popularity: 76
+  },
+  {
+    name: "Wave Optics",
+    link: "https://drive.google.com/file/d/1gz66tDB3VSp4ja7D5joWFhVOm-xv_14q/view?usp=drive_link",
+    difficulty: "advanced",
+    tags: ["Optics", "Waves"],
+    description: "Study of light as waves, including diffraction and interference phenomena.",
+    popularity: 80
+  },
+  {
+    name: "Electrostatics",
+    link: "https://drive.google.com/file/d/175zmMeBh_novBTojcv3AgRV6-0RTjIUS/view?usp=drive_link",
+    difficulty: "intermediate",
+    tags: ["Electricity", "Charge"],
+    description: "Study of electric charges at rest and the forces between them.",
+    popularity: 82
+  },
+  {
+    name: "Magnetic Fields Due to Electic Current",
+    link: "https://drive.google.com/file/d/11XyWuAAAnyN_UcNwYIcaPtYG80QAsRJE/view?usp=drive_link",
+    difficulty: "intermediate",
+    tags: ["Magnetism", "Electromagnetism"],
+    description: "Exploration of how electric currents produce magnetic fields.",
+    popularity: 79
+  },
+  {
+    name: "Magnetic Materials",
+    link: "https://drive.google.com/file/d/1dIR2t40GqykBB_NQNQ5OXm9gw69IgVaP/view?usp=drive_link",
+    difficulty: "intermediate",
+    tags: ["Magnetism", "Material Science"],
+    description: "Study of materials that respond to magnetic fields and their properties.",
+    popularity: 72
+  },
+  {
+    name: "Electromagnetic Induction",
+    link: "https://drive.google.com/file/d/1mLSKGXRPYK0rVdxnY9h05EcocvfQClbh/view?usp=drive_link",
+    difficulty: "advanced",
+    tags: ["Electromagnetism", "Induction"],
+    description: "Production of voltage across a conductor moving through a magnetic field.",
+    popularity: 84
+  },
+  {
+    name: "Dual Nature of Radiation and Matter",
+    link: "https://drive.google.com/file/d/1uoM3i1E4lllSlw7IS1dZnwRbzxrnqHl_/view?usp=drive_link",
+    difficulty: "advanced",
+    tags: ["Quantum Physics", "Wave-Particle Duality"],
+    description: "Concept that matter and energy exhibit both wave and particle properties.",
+    popularity: 88
+  },
+  {
+    name: "Structure Of Atoms And Nuclei",
+    link: "https://drive.google.com/file/d/15Kfed_NVOwsaoBzf_2xPQmrhGO_Z1z3m/view?usp=drive_link",
+    difficulty: "advanced",
+    tags: ["Nuclear Physics", "Atomic Physics"],
+    description: "Study of atomic composition, nuclear forces, and subatomic particles.",
+    popularity: 85
+  },
+  {
+    name: "Semiconductor Devics",
+    link: "https://drive.google.com/file/d/1uAvlywqGnxFOen9FSIi6cnxGQf7J170M/view?usp=drive_link",
+    difficulty: "advanced",
+    tags: ["Electronics", "Solid State Physics"],
+    description: "Study of devices made from semiconductor materials and their applications.",
+    popularity: 86
+  }
+];
+
+      // Variables for pagination
+      const itemsPerPage = 9;
+      let currentPage = 1;
+      let filteredTopics = [...topics];
+
+      // Render topic cards
+      function renderTopics() {
+        const topicsGrid = document.getElementById("topicsGrid");
+        topicsGrid.innerHTML = "";
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedTopics = filteredTopics.slice(startIndex, endIndex);
+
+        if (paginatedTopics.length === 0) {
+          topicsGrid.innerHTML = `
+            <div class="col-12 text-center py-5">
+              <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+              <h3 class="text-muted">No topics found</h3>
+              <p>Try adjusting your search or filter criteria</p>
+            </div>
+          `;
+          return;
+        }
+
+        paginatedTopics.forEach((topic) => {
+          // Determine difficulty level for visual indicators
+          const difficultyLevel =
+            topic.difficulty === "beginner"
+              ? 1
+              : topic.difficulty === "intermediate"
+              ? 2
+              : 3;
+
+          const card = document.createElement("div");
+          card.className = "topic-card";
+          card.innerHTML = `
+            <div class="topic-card-header">
+              <h3>${topic.name}</h3>
+              <div class="topic-difficulty">
+                <span>${
+                  topic.difficulty.charAt(0).toUpperCase() +
+                  topic.difficulty.slice(1)
+                }</span>
+                <div class="difficulty-dots">
+                  <div class="difficulty-dot ${
+                    difficultyLevel >= 1 ? "active" : ""
+                  }"></div>
+                  <div class="difficulty-dot ${
+                    difficultyLevel >= 2 ? "active" : ""
+                  }"></div>
+                  <div class="difficulty-dot ${
+                    difficultyLevel >= 3 ? "active" : ""
+                  }"></div>
+                </div>
+              </div>
+            </div>
+            <div class="topic-card-body">
+              <p>${topic.description}</p>
+              <div class="topic-tags">
+                ${topic.tags
+                  .map((tag) => `<span class="topic-badge">${tag}</span>`)
+                  .join("")}
+              </div>
+              <div class="topic-card-actions">
+                <span><i class="fas fa-users"></i> ${
+                  topic.popularity
+                }% students</span>
+                <a href="${topic.link}" class="view-btn" target="_blank">
+                  <i class="fas fa-file-pdf"></i> View
+                </a>
+              </div>
+            </div>
+          `;
+          topicsGrid.appendChild(card);
+        });
+
+        renderPagination();
+      }
+
+      // Render pagination controls
+      function renderPagination() {
+        const paginationControls =
+          document.getElementById("paginationControls");
+        const totalPages = Math.ceil(filteredTopics.length / itemsPerPage);
+
+        paginationControls.innerHTML = "";
+
+        // Previous button
+        const prevBtn = document.createElement("button");
+        prevBtn.innerHTML = `<i class="fas fa-chevron-left"></i>`;
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderTopics();
+          }
+        });
+        paginationControls.appendChild(prevBtn);
+
+        // Page numbers
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        if (endPage - startPage + 1 < maxVisiblePages) {
+          startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+          const pageBtn = document.createElement("button");
+          pageBtn.textContent = i;
+          pageBtn.className = i === currentPage ? "active" : "";
+          pageBtn.addEventListener("click", () => {
+            currentPage = i;
+            renderTopics();
+          });
+          paginationControls.appendChild(pageBtn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement("button");
+        nextBtn.innerHTML = `<i class="fas fa-chevron-right"></i>`;
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTopics();
+          }
+        });
+        paginationControls.appendChild(nextBtn);
+      }
+
+      // Search functionality
+      document
+        .getElementById("topicSearch")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          filterAndSortTopics(searchTerm);
+        });
+
+      // Sort functionality
+      document
+        .getElementById("sortSelect")
+        .addEventListener("change", function (e) {
+          filterAndSortTopics();
+        });
+
+      // Filter functionality
+      document
+        .getElementById("filterSelect")
+        .addEventListener("change", function (e) {
+          filterAndSortTopics();
+        });
+
+      function filterAndSortTopics(searchTerm = "") {
+        const searchInput = document
+          .getElementById("topicSearch")
+          .value.toLowerCase();
+        const searchValue = searchTerm || searchInput;
+        const sortValue = document.getElementById("sortSelect").value;
+        const filterValue = document.getElementById("filterSelect").value;
+
+        // Filter topics
+        filteredTopics = topics.filter((topic) => {
+          const matchesSearch =
+            topic.name.toLowerCase().includes(searchValue) ||
+            topic.description.toLowerCase().includes(searchValue) ||
+            topic.tags.some((tag) => tag.toLowerCase().includes(searchValue));
+
+          const matchesDifficulty =
+            filterValue === "all" || topic.difficulty === filterValue;
+
+          return matchesSearch && matchesDifficulty;
+        });
+
+        // Sort topics
+        switch (sortValue) {
+          case "name":
+            filteredTopics.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          case "nameDesc":
+            filteredTopics.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+          case "difficulty":
+            const difficultyOrder = {
+              beginner: 1,
+              intermediate: 2,
+              advanced: 3,
+            };
+            filteredTopics.sort(
+              (a, b) =>
+                difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]
+            );
+            break;
+          case "popularity":
+            filteredTopics.sort((a, b) => b.popularity - a.popularity);
+            break;
+        }
+
+        // Reset to first page when filtering/sorting
+        currentPage = 1;
+        renderTopics();
+      }
+
+      // Initial render
+      renderTopics();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
