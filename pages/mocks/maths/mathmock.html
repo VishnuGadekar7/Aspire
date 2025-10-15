@@ -471,13 +471,26 @@
                 if (!raw) return;
                 const s = JSON.parse(raw);
                 if (!s) return;
-                currentQuestionIndex = s.currentQuestionIndex || 0;
-                score = s.score || 0;
-                incorrect = s.incorrect || 0;
-                unanswered = s.unanswered ?? questions.length;
                 selectedAnswers = new Map(s.selectedAnswers || []);
                 reviewSet = new Set(s.reviewSet || []);
-                if (typeof s.timeLeft === 'number') timeLeft = s.timeLeft;
+                const answeredCount = selectedAnswers.size;
+                score = s.score || 0;
+                incorrect = s.incorrect || 0;
+                unanswered = Math.max(questions.length - answeredCount, 0);
+                const idx = typeof s.currentQuestionIndex === 'number' ? s.currentQuestionIndex : 0;
+                if (idx >= questions.length || unanswered === 0) {
+                    localStorage.removeItem('math-mock-state');
+                    selectedAnswers = new Map();
+                    reviewSet = new Set();
+                    score = 0;
+                    incorrect = 0;
+                    unanswered = questions.length;
+                    currentQuestionIndex = 0;
+                    timeLeft = 600;
+                } else {
+                    currentQuestionIndex = Math.max(0, Math.min(idx, questions.length - 1));
+                    if (typeof s.timeLeft === 'number') timeLeft = s.timeLeft;
+                }
             } catch (_) {}
         }
 
